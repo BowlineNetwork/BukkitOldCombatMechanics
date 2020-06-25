@@ -40,7 +40,6 @@ public class Config {
         YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("config.yml")));
 
         if(config.getInt("config-version") != defaultConfig.getInt("config-version")){
-            plugin.getLogger().warning("Config version does not match, backing up old config and creating a new one");
             plugin.upgradeConfig();
             reload();
             return true;
@@ -62,8 +61,6 @@ public class Config {
             return;
         }
 
-        Messenger.DEBUG_ENABLED = config.getBoolean("debug.enabled");
-
         WeaponDamages.initialise(plugin); //Reload weapon damages from config
 
         // Load all interactive blocks (used by sword blocking and elytra modules)
@@ -81,20 +78,15 @@ public class Config {
                 .forEach(module -> {
                     try{
                         module.reload();
-                    } catch(Exception e){
-                        plugin.getLogger()
-                                .log(Level.WARNING, "Error reloading module '" + module.toString() + "'", e);
-                    }
+                    } catch(Exception e) { }
                 });
     }
 
     public static boolean moduleEnabled(String name, World world){
         ConfigurationSection section = config.getConfigurationSection(name);
 
-        if(section == null){
-            plugin.getLogger().warning("Tried to check module '" + name + "', but it didn't exist!");
+        if(section == null)
             return false;
-        }
 
         if(section.getBoolean("enabled")){
             if(world == null){

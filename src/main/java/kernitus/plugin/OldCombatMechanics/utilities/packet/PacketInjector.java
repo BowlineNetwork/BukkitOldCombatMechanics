@@ -5,7 +5,6 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
-import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
 import kernitus.plugin.OldCombatMechanics.utilities.reflection.Reflector;
 import org.bukkit.entity.Player;
 
@@ -57,14 +56,12 @@ class PacketInjector extends ChannelDuplexHandler {
         channel = (Channel) Reflector.getFieldValue(manager, "channel");
 
         // remove old listener, if it wasn't properly cleared up
-        if(channel.pipeline().get("ocm_handler") != null){
-            debug("Old listener lingered around");
+        if(channel.pipeline().get("ocm_handler") != null) {
 
             ChannelHandler old = channel.pipeline().get("ocm_handler");
-            if(old instanceof PacketInjector){
-                debug("Detaching old listener");
+            if(old instanceof PacketInjector)
                 ((PacketInjector) old).detach();
-            }
+
 
             // remove old
             channel.pipeline().remove("ocm_handler");
@@ -81,11 +78,8 @@ class PacketInjector extends ChannelDuplexHandler {
      * Removes this handler
      */
     void detach(){
-        debug("Detaching injector... (%d)", hashCode());
-        if(isClosed || !channel.isOpen()){
-            debug("Closed(%b) or channel closed(%b) already! (%d)", isClosed, !channel.isOpen(), hashCode());
-            return;
-        }
+        if(isClosed || !channel.isOpen()) return;
+
         channel.eventLoop().submit(() -> {
             channel.pipeline().remove(this);
 
@@ -97,8 +91,6 @@ class PacketInjector extends ChannelDuplexHandler {
             // channel.
             playerWeakReference.clear();
             packetListeners.clear();
-
-            debug("Injector successfully detached (%d)", hashCode());
         });
     }
 
@@ -139,10 +131,6 @@ class PacketInjector extends ChannelDuplexHandler {
             throws Exception{
 
         if(playerWeakReference == null || playerWeakReference.get() == null){
-            debug(
-                    "playerWeakReference or its value is null. This should NOT happen at this stage. " +
-                            "(write@%d)", hashCode()
-            );
             detach();
 
             // bubble up
@@ -150,10 +138,7 @@ class PacketInjector extends ChannelDuplexHandler {
             return;
         }
 
-        if(!Packet.isNmsPacket(packet)){
-            debug("Received a packet THAT IS NO PACKET: " + packet.getClass() + " " + packet);
-            return;
-        }
+        if(!Packet.isNmsPacket(packet)) return;
 
         PacketEvent event = new PacketEvent(
                 packet,
@@ -166,9 +151,7 @@ class PacketInjector extends ChannelDuplexHandler {
                 if(!isClosed){
                     packetListener.onPacketSend(event);
                 }
-            } catch(Exception e){
-                Messenger.warn(e, "Error in a packet listener (send).");
-            }
+            } catch(Exception e) { }
         }
 
         // let it through
@@ -180,10 +163,6 @@ class PacketInjector extends ChannelDuplexHandler {
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception{
         if(playerWeakReference == null || playerWeakReference.get() == null){
-            debug(
-                    "playerWeakReference or its value is null. This should NOT happen at this stage. " +
-                            "(read@%d)", hashCode()
-            );
             detach();
 
             // bubble up
@@ -191,10 +170,7 @@ class PacketInjector extends ChannelDuplexHandler {
             return;
         }
 
-        if(!Packet.isNmsPacket(packet)){
-            debug("Received a packet THAT IS NO PACKET: " + packet.getClass() + " " + packet);
-            return;
-        }
+        if(!Packet.isNmsPacket(packet)) return;
 
         PacketEvent event = new PacketEvent(
                 packet,
@@ -207,18 +183,12 @@ class PacketInjector extends ChannelDuplexHandler {
                 if(!isClosed){
                     packetListener.onPacketReceived(event);
                 }
-            } catch(Exception e){
-                Messenger.warn(e, "Error in a packet listener (receive).");
-            }
+            } catch(Exception e) { }
         }
 
         // let it through
         if(!event.isCancelled()){
             super.channelRead(channelHandlerContext, packet);
         }
-    }
-
-    private static void debug(String message, Object... formatArgs){
-        Messenger.debug("PacketInjector: " + message, formatArgs);
     }
 }

@@ -1,11 +1,7 @@
 package kernitus.plugin.OldCombatMechanics;
 
-import kernitus.plugin.OldCombatMechanics.hooks.PlaceholderAPIHook;
-import kernitus.plugin.OldCombatMechanics.hooks.api.Hook;
 import kernitus.plugin.OldCombatMechanics.module.*;
-import kernitus.plugin.OldCombatMechanics.updater.ModuleUpdateChecker;
 import kernitus.plugin.OldCombatMechanics.utilities.Config;
-import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
 import kernitus.plugin.OldCombatMechanics.utilities.damage.EntityDamageByEntityListener;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -19,17 +15,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class OCMMain extends JavaPlugin {
 
     private static OCMMain INSTANCE;
-    private Logger logger = getLogger();
     private OCMConfigHandler CH = new OCMConfigHandler(this);
     private List<Runnable> disableListeners = new ArrayList<>();
     private List<Runnable> enableListeners = new ArrayList<>();
-    private List<Hook> hooks = new ArrayList<>();
 
     public static OCMMain getInstance(){
         return INSTANCE;
@@ -53,18 +46,6 @@ public class OCMMain extends JavaPlugin {
 
         // Register all the modules
         registerModules();
-
-        // Register all hooks for integrating with other plugins
-        registerHooks();
-
-        // Initialize all the hooks
-        hooks.forEach(hook -> hook.init(this));
-
-        // Set up the command handler
-        getCommand("OldCombatMechanics").setExecutor(new OCMCommandHandler(this, this.getFile()));
-
-        // Initialise the Messenger utility
-        Messenger.initialise(this);
 
         // Initialise Config utility
         Config.initialise(this);
@@ -109,9 +90,6 @@ public class OCMMain extends JavaPlugin {
                 }
             });
         });
-
-        // Logging to console the enabling of OCM
-        logger.info(pdfFile.getName() + " v" + pdfFile.getVersion() + " has been enabled");
     }
 
     @Override
@@ -141,12 +119,10 @@ public class OCMMain extends JavaPlugin {
         });
 
         // Logging to console the disabling of OCM
-        logger.info(pdfFile.getName() + " v" + pdfFile.getVersion() + " has been disabled");
     }
 
     private void registerModules(){
         // Update Checker (also a module so we can use the dynamic registering/unregistering)
-        ModuleLoader.addModule(new ModuleUpdateChecker(this, this.getFile()));
 
         // Module listeners
         ModuleLoader.addModule(new ModuleAttackCooldown(this));
@@ -187,12 +163,6 @@ public class OCMMain extends JavaPlugin {
         ModuleLoader.addModule(new ModuleChorusFruit(this));
 
         ModuleLoader.addModule(new ModuleOldBurnDelay(this));
-    }
-
-    private void registerHooks(){
-        if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
-            hooks.add(new PlaceholderAPIHook());
-        }
     }
 
     public void upgradeConfig(){

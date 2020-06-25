@@ -64,7 +64,6 @@ public class ModulePlayerRegen extends Module {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             //This is because bukkit doesn't stop the exhaustion change when cancelling the event
             p.setExhaustion(previousExhaustion + exhaustionToApply);
-            debug("Exhaustion before: " + previousExhaustion + " Now: " + p.getExhaustion() + " Saturation: " + p.getSaturation(), p);
         }, 1L);
     }
     

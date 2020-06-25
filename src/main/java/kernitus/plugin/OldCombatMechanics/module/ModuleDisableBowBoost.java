@@ -19,30 +19,28 @@ public class ModuleDisableBowBoost extends Module {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onProjectileHit(EntityDamageByEntityEvent e){
-        if(!(e.getEntity() instanceof Player)){
+    public void onProjectileHit(EntityDamageByEntityEvent e) {
+        if (!(e.getEntity() instanceof Player)){
             return;
         }
 
         Player player = (Player) e.getEntity();
 
-        if(!isEnabled(player.getWorld())){
+        if (!isEnabled(player.getWorld())){
             return;
         }
 
-        if(!(e.getDamager() instanceof Arrow)){
+        if (!(e.getDamager() instanceof Arrow)){
             return;
         }
 
         Arrow arrow = (Arrow) e.getDamager();
 
         ProjectileSource shooter = arrow.getShooter();
-        if(shooter instanceof Player){
+        if (shooter instanceof Player){
             Player shootingPlayer = (Player) shooter;
-            if(player.getUniqueId().equals(shootingPlayer.getUniqueId())){
+            if (player.getUniqueId().equals(shootingPlayer.getUniqueId()))
                 e.setCancelled(true);
-                debug("We cancelled your bow boost", player);
-            }
         }
     }
 }

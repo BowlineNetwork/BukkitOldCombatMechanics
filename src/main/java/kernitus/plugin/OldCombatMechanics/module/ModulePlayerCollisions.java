@@ -1,7 +1,6 @@
 package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
-import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
 import kernitus.plugin.OldCombatMechanics.utilities.packet.PacketAdapter;
 import kernitus.plugin.OldCombatMechanics.utilities.packet.PacketEvent;
 import kernitus.plugin.OldCombatMechanics.utilities.packet.PacketManager;
@@ -70,10 +69,8 @@ public class ModulePlayerCollisions extends Module {
             teamPacket.setTeamAction(TeamAction.UPDATE);
             teamPacket.setCollisionRule(collisionRule);
             teamPacket.send(player);
-        } else {
-            debug("Fake collision team created for you.", player);
+        } else
             createAndSendNewTeam(player, collisionRule);
-        }
     }
 
     /**
@@ -134,13 +131,6 @@ public class ModulePlayerCollisions extends Module {
                 return;
             }
 
-            Messenger.debug(
-                    "Collision rule set to %s for action %s in world %s.",
-                    collisionRule,
-                    TeamUtils.getPacketAction(nmsPacket),
-                    packetEvent.getPlayer().getWorld().getName()
-            );
-
             TeamUtils.setCollisionRule(nmsPacket, collisionRule);
 
             // Reinstate if it was disbanded to have the correct rule
@@ -156,10 +146,8 @@ public class ModulePlayerCollisions extends Module {
         private void updateToPacket(Player player, TeamPacket teamPacket, Object nmsPacket){
             teamPacket.adjustToUpdate(nmsPacket);
 
-            if(!teamPacket.teamExists()){
+            if(!teamPacket.teamExists())
                 playerTeamMap.remove(player);
-                debug("Your team was disbanded.", player);
-            }
         }
     }
 }

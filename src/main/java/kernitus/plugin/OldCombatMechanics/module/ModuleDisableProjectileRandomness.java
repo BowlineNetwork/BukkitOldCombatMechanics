@@ -32,7 +32,6 @@ public class ModuleDisableProjectileRandomness extends Module {
         if(shooter instanceof Player){
             Player player = (Player) shooter;
             if(!isEnabled(player.getWorld())) return;
-            debug("Making projectile go straight", player);
 
             Vector playerDirection = player.getLocation().getDirection().normalize();
             Vector projectileDirection = projectile.getVelocity();
@@ -46,11 +45,11 @@ public class ModuleDisableProjectileRandomness extends Module {
             // Angles is specified in radians, where 10° = 0.17 radians
             if(!fuzzyVectorEquals(projectileDirection, playerDirection)) { // If the projectile is not going straight
                 if (fuzzyVectorEquals(projectileDirection, playerDirection.rotateAroundY(0.17))) {
-                    debug("10° Offset", player);
+
                 }
-                else if (fuzzyVectorEquals(projectileDirection, playerDirection.rotateAroundY(-0.35)))
+                else if (fuzzyVectorEquals(projectileDirection, playerDirection.rotateAroundY(-0.35))) {
                     //arrowVelocity.rotateAroundY(-10);
-                    debug("-10° Offset", player);
+                }
             }
 
             playerDirection.multiply(originalMagnitude);

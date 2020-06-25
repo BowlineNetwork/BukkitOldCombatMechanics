@@ -76,8 +76,6 @@ public class ModuleFishingKnockback extends Module {
         if(!knockbackNonPlayerEntities) {
             Player player = (Player) hitEntity;
 
-            debug("You were hit by a fishing rod!", player);
-
             if (player.equals(rodder)) return;
 
             if (player.getGameMode() == GameMode.CREATIVE) return;
@@ -94,18 +92,8 @@ public class ModuleFishingKnockback extends Module {
         EntityDamageEvent event = makeEvent(rodder, hitEntity, damage);
         Bukkit.getPluginManager().callEvent(event);
 
-        if(module().getBoolean("checkCancelled") && event.isCancelled()){
-
-            if(plugin.getConfig().getBoolean("debug.enabled")){
-                debug("You can't do that here!", rodder);
-                HandlerList hl = event.getHandlers();
-
-                // This is to check what plugins are listening to the event
-                for(RegisteredListener rl : hl.getRegisteredListeners())
-                    debug("Plugin Listening: " + rl.getPlugin().getName(), rodder);
-            }
+        if(module().getBoolean("checkCancelled") && event.isCancelled())
             return;
-        }
 
         livingEntity.damage(damage);
         livingEntity.setVelocity(calculateKnockbackVelocity(livingEntity.getVelocity(), livingEntity.getLocation(), hook.getLocation()));

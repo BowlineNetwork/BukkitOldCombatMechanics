@@ -76,9 +76,7 @@ public class ConfigUtils {
                     PotionType potionType = PotionType.valueOf(potionName);
                     durationsHashMap.put(potionType, new PotionDurations(getGenericDurations(drinkable), getGenericDurations(splash)));
 
-                } catch (IllegalArgumentException e){ //In case the potion doesn't exist in the version running on the server
-                    Messenger.debug("Skipping loading " + potionName + " potion");
-                }
+                } catch (IllegalArgumentException e) { }
             }
 
         return durationsHashMap;

@@ -53,11 +53,6 @@ public class ModuleChorusFruit extends Module {
 
                 e.getPlayer().setFoodLevel(newFoodLevel);
                 e.getPlayer().setSaturation(newSaturation);
-
-                debug(
-                        "Food level changed from: " + previousFoodLevel + " to " + e.getPlayer().getFoodLevel(),
-                        e.getPlayer()
-                );
             }
         }.runTaskLater(plugin, 2);
     }
@@ -70,22 +65,18 @@ public class ModuleChorusFruit extends Module {
 
         double distance = getMaxTeleportationDistance();
 
-        if(distance == 8){
-            debug("Using vanilla teleport implementation!", e.getPlayer());
+        if(distance == 8)
             return;
-        }
 
-        if(distance <= 0){
-            debug("Chorus teleportation is not allowed", e.getPlayer());
+
+        if(distance <= 0) {
             e.setCancelled(true);
             return;
         }
 
         // Not sure when this can occur, but it is marked as @Nullable
-        if(e.getTo() == null){
-            debug("Teleport target is null", e.getPlayer());
+        if(e.getTo() == null)
             return;
-        }
 
         int maxheight = e.getTo().getWorld().getMaxHeight();
         e.setTo(e.getPlayer().getLocation().add(

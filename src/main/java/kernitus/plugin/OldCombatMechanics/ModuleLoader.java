@@ -2,7 +2,6 @@ package kernitus.plugin.OldCombatMechanics;
 
 import kernitus.plugin.OldCombatMechanics.module.Module;
 import kernitus.plugin.OldCombatMechanics.utilities.EventRegistry;
-import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +24,9 @@ public class ModuleLoader {
 
     private static void setState(Module module, boolean state){
         if(state){
-            if(eventRegistry.registerListener(module)){
-                Messenger.debug("Enabled " + module.getClass().getSimpleName());
-            }
+            if(eventRegistry.registerListener(module)) { }
         } else {
-            if(eventRegistry.unregisterListener(module)){
-                Messenger.debug("Disabled " + module.getClass().getSimpleName());
-            }
+            if (eventRegistry.unregisterListener(module)) { }
         }
     }
 

@@ -1,7 +1,6 @@
 package kernitus.plugin.OldCombatMechanics.utilities.packet;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
-import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -73,9 +72,7 @@ public class PacketManager implements Listener {
                     PacketInjector injector = new PacketInjector(player);
                     injector.addPacketListener(listener);
                     injectorMap.put(player.getUniqueId(), injector);
-                } catch(Exception e){
-                    Messenger.debug("Error attaching packet listener!", e);
-                }
+                } catch(Exception e) { }
             }
         }
     }

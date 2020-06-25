@@ -16,8 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import static kernitus.plugin.OldCombatMechanics.utilities.Messenger.debug;
-
 public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
 
     private boolean cancelled;
@@ -72,19 +70,13 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
 
         EntityType entity = damagee.getType();
 
-        debug(le, "Raw damage: " + rawDamage);
-
         mobEnchantmentsDamage = MobDamage.applyEntityBasedDamage(entity, weapon, rawDamage) - rawDamage;
 
         sharpnessLevel = weapon.getEnchantmentLevel(Enchantment.DAMAGE_ALL);
         sharpnessDamage = DamageUtils.getNewSharpnessDamage(sharpnessLevel);
 
-        debug(le, "Mob: " + mobEnchantmentsDamage + " Sharpness: " + sharpnessDamage);
-
         //Amount of damage including potion effects and critical hits
         double tempDamage = rawDamage - mobEnchantmentsDamage - sharpnessDamage;
-
-        debug(le, "No ench damage: " + tempDamage);
 
         //Check if it's a critical hit
         if(le instanceof Player){
@@ -92,7 +84,6 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
             if(DamageUtils.isCriticalHit(player)){
                 criticalMultiplier = 1.5;
                 tempDamage /= 1.5;
-                debug(player, "Critical hit detected");
             }
         }
 
@@ -105,14 +96,9 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
 
         strengthModifier = strengthLevel * 3;
 
-        debug(le, "Strength Modifier: " + strengthModifier);
-
         if(le.hasPotionEffect(PotionEffectType.WEAKNESS)) weaknessModifier = -4;
 
-        debug(le, "Weakness Modifier: " + weaknessModifier);
-
         baseDamage = tempDamage + weaknessModifier - strengthModifier;
-        debug(le, "Base tool damage: " + baseDamage);
     }
 
     public Entity getDamager(){

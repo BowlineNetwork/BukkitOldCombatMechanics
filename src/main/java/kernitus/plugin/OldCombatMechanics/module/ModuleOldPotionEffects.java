@@ -53,7 +53,6 @@ public class ModuleOldPotionEffects extends Module {
                 //Turtle Master potion has two effects and Bukkit only returns one with #getEffectType()
                 EXCLUDED_POTION_TYPES.add(PotionType.TURTLE_MASTER);
             } catch (NoSuchFieldError e) {
-                debug("Skipping excluding a potion (probably older server version)");
             }
 
         reload();
@@ -165,7 +164,6 @@ public class ModuleOldPotionEffects extends Module {
 
     private int getPotionDuration(PotionData potionData, boolean splash){
         PotionType potionType = potionData.getType();
-        debug("Potion type: " + potionType.name());
 
         GenericPotionDurations potionDurations;
 
@@ -191,7 +189,6 @@ public class ModuleOldPotionEffects extends Module {
             event.setIsWeaknessModifierMultiplier(module().getBoolean("weakness.multiplier"));
             double newWeaknessModifier = module().getDouble("weakness.modifier");
             event.setWeaknessModifier(newWeaknessModifier);
-            debug("Old weakness modifier: " + weaknessModifier + " New: " + newWeaknessModifier, damager);
         }
 
         double strengthModifier = event.getStrengthModifier();
@@ -201,7 +198,6 @@ public class ModuleOldPotionEffects extends Module {
             event.setIsStrengthModifierAddend(module().getBoolean("strength.addend"));
             double newStrengthModifier = module().getDouble("strength.modifier");
             event.setStrengthModifier(newStrengthModifier);
-            debug("Old strength modifier: " + strengthModifier + " New: " + newStrengthModifier, damager);
         }
     }
 }

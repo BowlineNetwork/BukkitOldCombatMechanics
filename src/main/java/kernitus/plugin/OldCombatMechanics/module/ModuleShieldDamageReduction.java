@@ -52,8 +52,6 @@ public class ModuleShieldDamageReduction extends Module {
 
         if(e.getFinalDamage() >= reducedDamage)
             e.setDamage(DamageModifier.BLOCKING, -reducedDamage);
-
-        debug("Damage reduced by: " + e.getDamage(DamageModifier.BLOCKING), player);
     }
 
     private double getReducedDamage(double fullDamage, DamageCause damageCause){

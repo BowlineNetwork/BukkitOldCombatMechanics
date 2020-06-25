@@ -41,7 +41,6 @@ public class ModuleOldArmourDurability extends Module {
             // We're checking all the pieces this way just in case they're wearing two helmets or something strange
             final List<ItemStack> matchedPieces = armour.stream().filter(piece -> piece.equals(item)).collect(Collectors.toList());
             armour.removeAll(matchedPieces);
-            debug("Item matched explosion, ignoring...", player);
             if(!matchedPieces.isEmpty()) return;
         }
 
@@ -54,7 +53,6 @@ public class ModuleOldArmourDurability extends Module {
         if(randomInt >= damageChance)
             reduction = 0;
 
-        debug("Item damaged: " + itemType + " Damage: " + e.getDamage() + " Changed to: " + reduction, player);
         e.setDamage(reduction);
     }
 
@@ -75,12 +73,10 @@ public class ModuleOldArmourDurability extends Module {
             @Override
             public void run() {
                 explosionDamaged.remove(uuid);
-                debug("Removed from explosion set!", player);
             }
         };
 
         // This delay seems enough for the durability events to fire
         runnable.runTaskLaterAsynchronously(plugin, 1);
-        debug("Detected explosion!", player);
     }
 }

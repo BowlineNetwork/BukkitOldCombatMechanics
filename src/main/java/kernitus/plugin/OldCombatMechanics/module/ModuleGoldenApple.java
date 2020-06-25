@@ -1,7 +1,6 @@
 package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
-import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.configuration.ConfigurationSection;
@@ -71,7 +70,6 @@ public class ModuleGoldenApple extends Module {
         if(isEnabled() && module().getBoolean("enchanted-golden-apple-crafting")){
             if(Bukkit.getRecipesFor(ENCHANTED_GOLDEN_APPLE.newInstance()).size() > 0) return;
             Bukkit.addRecipe(enchantedAppleRecipe);
-            Messenger.debug("Added napple recipe");
         }
     }
 

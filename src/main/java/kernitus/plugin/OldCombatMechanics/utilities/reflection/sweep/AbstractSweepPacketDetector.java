@@ -34,9 +34,8 @@ abstract class AbstractSweepPacketDetector implements SweepPacketDetector {
         try{
             return field.get(handle);
         } catch(IllegalAccessException e){
-            OCMMain.getInstance().getLogger().log(Level.INFO, "Error getting field " + field, e);
+            return null;
         }
-        return null;
     }
 
     /**

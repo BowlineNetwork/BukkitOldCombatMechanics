@@ -32,7 +32,6 @@ public class OCMConfigHandler {
 
     private void setupConfig(String fileName){
         plugin.saveResource(fileName, false);
-        plugin.getLogger().info("Config file " + fileName + " generated");
     }
 
     public YamlConfiguration getConfig(String fileName){

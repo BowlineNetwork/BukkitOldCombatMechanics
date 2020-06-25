@@ -1,7 +1,6 @@
 package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
-import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
 import kernitus.plugin.OldCombatMechanics.utilities.damage.ToolDamage;
 import kernitus.plugin.OldCombatMechanics.utilities.packet.PacketAdapter;
 import kernitus.plugin.OldCombatMechanics.utilities.packet.PacketEvent;
@@ -93,10 +92,9 @@ public class ModuleSwordSweep extends Module {
 
         if(!(damager instanceof Player)) return;
 
-        if(sweepDamageCause != null){
-            if(e.getCause() == sweepDamageCause){
+        if(sweepDamageCause != null) {
+            if(e.getCause() == sweepDamageCause) {
                 e.setCancelled(true);
-                debug("Sweep cancelled", damager);
             }
             // sweep attack detected or not, we do not need to fall back to the guessing implementation
             return;
@@ -124,10 +122,9 @@ public class ModuleSwordSweep extends Module {
 
         if(e.getDamage() == damage){
             // Possibly a sword-sweep attack
-            if(sweepLocations.contains(attackerLocation)){
-                debug("Cancelling sweep...", attacker);
+            if(sweepLocations.contains(attackerLocation))
                 e.setCancelled(true);
-            }
+
         } else {
             sweepLocations.add(attackerLocation);
         }
@@ -154,14 +151,8 @@ public class ModuleSwordSweep extends Module {
                 if(SweepPacketDetector.getInstance().isSweepPacket(packetEvent.getPacket())){
                     packetEvent.setCancelled(true);
                 }
-            } catch(Exception e){
+            } catch(Exception e) {
                 disabledDueToError = true;
-                Messenger.warn(
-                        e,
-                        "Error detecting sweep packets. Please report it along with the following exception " +
-                                "on github." +
-                                "Sweep cancellation should still work, but particles might show up."
-                );
             }
         }
     }

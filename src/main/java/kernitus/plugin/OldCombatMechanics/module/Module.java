@@ -2,7 +2,6 @@ package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
 import kernitus.plugin.OldCombatMechanics.utilities.Config;
-import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -56,7 +55,7 @@ public abstract class Module implements Listener {
      * @param name the name of the setting
      * @return true if the setting with that name is enabled. Returns false if the setting did not exist.
      */
-    public boolean isSettingEnabled(String name){
+    public boolean isSettingEnabled(String name) {
         return plugin.getConfig().getBoolean(configName + "." + name, false);
     }
 
@@ -73,33 +72,12 @@ public abstract class Module implements Listener {
      * Called when the plugin is reloaded. Should re-read all relevant config keys and other resources that might have
      * changed.
      */
-    public void reload(){
+    public void reload() {
         // Intentionally left blank! Meant for individual modules to use.
     }
 
-    /**
-     * Outputs a debug message.
-     *
-     * @param text the message text
-     */
-    protected void debug(String text){
-        Messenger.debug("[" + moduleName + "] " + text);
-    }
-
-    /**
-     * Sends a debug message to the given command sender.
-     *
-     * @param text   the message text
-     * @param sender the sender to send it to
-     */
-    protected void debug(String text, CommandSender sender){
-        if(Config.debugEnabled()){
-            Messenger.send(sender, "&8&l[&fDEBUG&8&l][&f" + moduleName + "&8&l]&7 " + text);
-        }
-    }
-
     @Override
-    public String toString(){
+    public String toString() {
         return WordUtils.capitalizeFully(configName.replaceAll("-", " "));
     }
 }
